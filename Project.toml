@@ -1,0 +1,8 @@
+name = "julia_bot"
+uuid = "e3581f31-b403-4e7f-b141-5189e100ce3b"
+authors = ["Vikas <v33vikasgautam@gmail.com>"]
+version = "0.1.0"
+
+[deps]
+JSON3 = "0f8b85d8-7281-11e9-16c2-39a750bddbf1"
+Sockets = "6462fe0b-24de-5631-8697-dd941f90decc"
