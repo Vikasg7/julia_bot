@@ -21,7 +21,7 @@ function auth(sock::TCPSocket, tokn::String, user::String)
    sendline(sock, "NICK " * user)
    message = sock |> readline |> Msg.parse
    if message isa Data.Notice
-      error("AUTH: " * Msg.text)
+      error("AUTH: " * message.text)
    end
 end
 
@@ -29,7 +29,7 @@ function join(sock::TCPSocket, chnl::String)
    sendline(sock, "JOIN #" * chnl)
    message = sock |> readline |> Msg.parse
    if message isa Data.Notice
-      error("JOIN: " * Msg.text)
+      error("JOIN: " * message.text)
    end
 end
 
