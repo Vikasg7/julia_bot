@@ -2,10 +2,11 @@ module julia_bot
 
 using Sockets:TCPSocket
 
-include("./data.jl")
-include("./config.jl")
-include("./irc.jl")
 include("./utils.jl")
+include("./data.jl")
+include("./msg.jl")
+include("./irc.jl")
+include("./config.jl")
 include("./bot.jl")
 
 function reply(user::String, msg::Data.Ping)::Data.Reply

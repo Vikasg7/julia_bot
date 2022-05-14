@@ -3,9 +3,9 @@ module Irc
 using Sockets
 using Sockets:TCPSocket
 
-include("./data.jl")
-include("./msg.jl")
-include("./utils.jl")
+# include("./data.jl")
+# include("./msg.jl")
+# include("./utils.jl")
 
 function connect(sock::TCPSocket, host::String, port::Integer)
    Sockets.connect!(sock, host, port)

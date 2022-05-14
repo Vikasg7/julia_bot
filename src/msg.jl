@@ -1,7 +1,7 @@
 module Msg
 
-include("./data.jl")
-include("./utils.jl")
+# include("./data.jl")
+# include("./utils.jl")
 
 # PING :tmi.twitch.tv
 # :tmi.twitch.tv NOTICE * :Improperly formatted auth
