@@ -10,7 +10,7 @@ include("./config.jl")
 include("./bot.jl")
 
 function reply(user::String, msg::Data.Ping)::Data.Reply
-   Data.Reply(msg.text)
+   Data.Pong(msg.text)
 end
 
 function reply(user::String, msg::Data.PrivMsg)::Data.Reply
@@ -27,7 +27,7 @@ function reply(user::String, msg::Data.PrivMsg)::Data.Reply
 end
 
 function reply(user::String, msg::Nothing)::Data.Reply
-   nothing
+   return nothing
 end
 
 function main()
@@ -38,8 +38,7 @@ function main()
       Irc.auth(sock, cfg.tokn, cfg.user)
       Irc.join(sock, cfg.chnl)
       println("julia_bot is connected!")
-      for msg in Irc.msgs(sock)
-         println(msg)
+      asyncmap(Irc.msgs(sock)) do msg
          Irc.send(sock, reply(cfg.user, msg))
       end
    finally

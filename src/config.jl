@@ -2,8 +2,7 @@ module Config
 
 using JSON3
 using JSON3:StructTypes
-
-# include("./data.jl")
+using ..Data
 
 StructTypes.StructType(::Type{Data.Config}) = StructTypes.Struct()
 
