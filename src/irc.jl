@@ -16,29 +16,29 @@ function connect(sock::TCPSocket, host::String, port::Integer)
 end
 
 function auth(sock::TCPSocket, tokn::String, user::String)
-   sendline(sock, "PASS " * tokn)
-   sendline(sock, "NICK " * user)
+   sendline(sock, "PASS $(tokn)")
+   sendline(sock, "NICK $(user)")
    message = readavailable(sock) |> String |> Msg.parse
    if message isa Data.Notice
-      error("AUTH: " * message.text)
+      error("AUTH: $(message.text)")
    end
 end
 
 function join(sock::TCPSocket, chnl::String)
-   sendline(sock, "JOIN #" * chnl)
+   sendline(sock, "JOIN #$(chnl)")
    message = Utils.timeout(1.0) do
       readavailable(sock) |> String |> Msg.parse
    end
    if message == :timeout
-      error("JOIN: Channel" * chnl * " doesn't exist.")
+      error("JOIN: channel $(chnl) doesn't exist.")
    end
    if message isa Data.Notice
-      error("JOIN: " * message.text)
+      error("JOIN: $(message.text)")
    end
 end
 
 function sendline(sock::TCPSocket, buffer::String)
-   write(sock, buffer * "\r\n")
+   write(sock, "$(buffer)\r\n")
 end
 
 function msgs(sock)
@@ -48,11 +48,11 @@ function msgs(sock)
 end
 
 function send(sock::TCPSocket, reply::Data.Pong)
-   sendline(sock, "PONG " * reply.text)
+   sendline(sock, "PONG $(reply.text)")
 end
 
 function send(sock::TCPSocket, reply::Data.PrivMsg)
-   sendline(sock, "PRIVMSG #" * reply.chnl * " :" * reply.text)
+   sendline(sock, "PRIVMSG #$(reply.chnl) :$(reply.text)")
 end
 
 function send(sock::TCPSocket, reply::Nothing)

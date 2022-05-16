@@ -13,10 +13,10 @@ function parse(raw::String)::Data.Msg
       match(r, raw)
    end
    if m !== nothing
-      m[:type] == "PING" ? Data.Ping(m[:text]) :
-      m[:type] == "NOTICE" ? Data.Notice(m[:text]) :
+      m[:type] == "PING"    ? Data.Ping(m[:text]) :
+      m[:type] == "NOTICE"  ? Data.Notice(m[:text]) :
       m[:type] == "PRIVMSG" ? Data.PrivMsg(m[:sndr], m[:chnl], m[:text]) :
-      nothing
+                              nothing
    end
 end
 

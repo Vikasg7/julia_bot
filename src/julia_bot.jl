@@ -22,7 +22,7 @@ function reply(user::String, msg::Data.PrivMsg)::Data.Reply
       return Data.PrivMsg(user, msg.chnl, text)
    end
    if cmd == "!hi"
-      return Data.PrivMsg(user, msg.chnl, "Hello")
+      return Data.PrivMsg(user, msg.chnl, "Hello @$(msg.sndr)")
    end
 end
 

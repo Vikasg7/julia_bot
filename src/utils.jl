@@ -20,10 +20,9 @@ function timeout(fn::Function, seconds::Real)
       istaskdone(t) || Base.throwto(t, TaskTimeoutException())
    end
    try
-      v = fetch(t)
-      return v
+      return fetch(t)
    catch e
-      if e isa TaskFailedException &&
+      if e        isa TaskFailedException &&
          t.result isa TaskTimeoutException
          return :timeout
       end
