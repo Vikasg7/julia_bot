@@ -5,30 +5,9 @@ using Sockets:TCPSocket
 include("./utils.jl")
 include("./data.jl")
 include("./msg.jl")
+include("./bot.jl")
 include("./irc.jl")
 include("./config.jl")
-include("./bot.jl")
-
-function reply(user::String, msg::Data.Ping)::Data.Reply
-   Data.Pong(msg.text)
-end
-
-function reply(user::String, msg::Data.PrivMsg)::Data.Reply
-   self = msg.sndr == user
-   if self return end
-   cmd, args... = lowercase.(split(msg.text, " "))
-   if cmd == "!weather"
-      text = Bot.weather(self, msg.sndr, args...)
-      return Data.PrivMsg(user, msg.chnl, text)
-   end
-   if cmd == "!hi"
-      return Data.PrivMsg(user, msg.chnl, "Hello @$(msg.sndr)")
-   end
-end
-
-function reply(user::String, msg::Nothing)::Data.Reply
-   return nothing
-end
 
 function main()
    cfg = Config.read("./config.json")
@@ -39,7 +18,7 @@ function main()
       Irc.join(sock, cfg.chnl)
       println("julia_bot is connected!")
       asyncmap(Irc.msgs(sock)) do msg
-         Irc.send(sock, reply(cfg.user, msg))
+         Irc.send(sock, Irc.reply(cfg.user, msg))
       end
    finally
       close(sock)

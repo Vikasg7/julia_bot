@@ -1,16 +1,17 @@
 module Irc
 
 using Sockets
-using Sockets:TCPSocket
+using Sockets: TCPSocket
 using ..Data
 using ..Msg
 using ..Utils
+using ..Bot
 
 function connect(sock::TCPSocket, host::String, port::Integer)
    Sockets.connect!(sock, host, port)
    # Waiting for the connection is open and avoid 
    # Base.IOError("write: broken pipe (EPIPE)", -4047)
-   while sock.status != Base.StatusOpen 
+   while sock.status != Base.StatusOpen
       sleep(0.1)
    end
 end
@@ -56,6 +57,25 @@ function send(sock::TCPSocket, reply::Data.PrivMsg)
 end
 
 function send(sock::TCPSocket, reply::Nothing)
+   return nothing
+end
+
+function reply(user::String, msg::Data.Ping)::Data.Reply
+   Data.Pong(msg.text)
+end
+
+function reply(user::String, msg::Data.PrivMsg)::Data.Reply
+   self = msg.sndr == user
+   if self return end
+   cmd, args... = lowercase.(split(msg.text, " "))
+   botFn = get(Bot.fnTbl, cmd, nothing)
+   if botFn !== nothing
+      text = botFn(self, msg.sndr, args...)
+      return Data.PrivMsg(user, msg.chnl, text)
+   end
+end
+
+function reply(user::String, msg::Nothing)::Data.Reply
    return nothing
 end
 
