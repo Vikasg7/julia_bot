@@ -65,12 +65,11 @@ function reply(user::String, msg::Data.Ping)::Data.Reply
 end
 
 function reply(user::String, msg::Data.PrivMsg)::Data.Reply
-   self = msg.sndr == user
-   if self return end
+   if msg.sndr == user return end
    cmd, args... = lowercase.(split(msg.text, " "))
-   botFn = get(Bot.fnTbl, cmd, nothing)
+   botFn = get(Bot.botFnTbl, cmd, nothing)
    if botFn !== nothing
-      text = botFn(self, msg.sndr, args...)
+      text = botFn(msg.sndr, args...)
       return Data.PrivMsg(user, msg.chnl, text)
    end
 end

@@ -3,11 +3,11 @@ module Bot
 using HTTP
 using URIs
 
-function hi(self, sndr, args...)::String
+function hi(sndr, args...)::String
    "Hello @$(sndr)"
 end
 
-function weather(self, sndr, args...)::String
+function weather(sndr, args...)::String
    try
       loc = URIs.escapeuri(join(args, " "))
       resp = HTTP.get("https://wttr.in/$(loc)?format=4")
@@ -17,7 +17,8 @@ function weather(self, sndr, args...)::String
    end
 end
 
-fnTbl = Dict(
+# Add the mapping for the !cmd and function here.
+botFnTbl = Dict(
    "!weather" => weather,
    "!hi"      => hi
 )
