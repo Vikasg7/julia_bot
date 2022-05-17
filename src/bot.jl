@@ -3,11 +3,11 @@ module Bot
 using HTTP
 using URIs
 
-function hi(sndr, args...)::String
+function hi(admin, sndr, args...)::String
    "Hello @$(sndr)"
 end
 
-function weather(sndr, args...)::String
+function weather(admin, sndr, args...)::String
    try
       loc = URIs.escapeuri(join(args, " "))
       resp = HTTP.get("https://wttr.in/$(loc)?format=4")

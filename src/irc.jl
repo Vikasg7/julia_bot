@@ -69,7 +69,7 @@ function reply(user::String, msg::Data.PrivMsg)::Data.Reply
    cmd, args... = lowercase.(split(msg.text, " "))
    botFn = get(Bot.botFnTbl, cmd, nothing)
    if botFn !== nothing
-      text = botFn(msg.sndr, args...)
+      text = botFn(msg.chnl, msg.sndr, args...)
       return Data.PrivMsg(user, msg.chnl, text)
    end
 end

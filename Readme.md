@@ -4,7 +4,7 @@ A basic twitch bot in Julia Programming Language.
 ## How to use
 * Add your bot function in the `src/Bot.jl` like below:-  
 ``` julia
-   function mybot(sndr, args...)
+   function mybot(admin, sndr, args...)
       # process the args for the reply
       "$(sndr) Reply from mybot"
    end
