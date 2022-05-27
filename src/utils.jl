@@ -25,7 +25,7 @@ function timeout(fn::Function, seconds::Real)
          t.result isa TaskTimeoutException
          return :timeout
       end
-      throw(CapturedException(e, catch_backtrace()))
+      rethrow()
    end
 end
 
