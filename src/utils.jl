@@ -3,9 +3,7 @@ module Utils
 function some(pred::Function, A::AbstractArray)
    for a in A
       v = pred(a)
-      if v !== nothing
-         return v
-      end
+      v !== nothing && return v
    end
 end
 
@@ -21,10 +19,9 @@ function timeout(fn::Function, seconds::Real)
    try
       fetch(t)
    catch e
-      if e        isa TaskFailedException &&
-         t.result isa TaskTimeoutException
+      e        isa TaskFailedException &&
+      t.result isa TaskTimeoutException &&
          return :timeout
-      end
       rethrow()
    end
 end

@@ -20,9 +20,15 @@ function main()
       asyncmap(Irc.msgs(sock)) do msg
          Irc.send(sock, Irc.reply(cfg.user, msg))
       end
+   catch ex
+      showerror(stderr, ex, catch_backtrace())
    finally
       close(sock)
    end
 end
 
+end
+
+if abspath(PROGRAM_FILE) == @__FILE__
+   julia_bot.main()
 end

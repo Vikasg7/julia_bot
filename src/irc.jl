@@ -20,9 +20,8 @@ function auth(sock::TCPSocket, tokn::String, user::String)
    sendline(sock, "PASS $(tokn)")
    sendline(sock, "NICK $(user)")
    message = readavailable(sock) |> String |> Msg.parse
-   if message isa Data.Notice
+   message isa Data.Notice &&
       error("AUTH: $(message.text)")
-   end
 end
 
 function join(sock::TCPSocket, chnl::String)
@@ -30,12 +29,10 @@ function join(sock::TCPSocket, chnl::String)
    message = Utils.timeout(1.0) do
       readavailable(sock) |> String |> Msg.parse
    end
-   if message == :timeout
+   message == :timeout &&
       error("JOIN: channel $(chnl) doesn't exist.")
-   end
-   if message isa Data.Notice
+   message isa Data.Notice &&
       error("JOIN: $(message.text)")
-   end
 end
 
 function sendline(sock::TCPSocket, buffer::String)
