@@ -3,12 +3,13 @@ module Msg
 using ..Data
 using ..Utils
 
+rs = [
+   r"(?<type>PING) (?<text>.+)",
+   r"(?<type>NOTICE) \* :(?<text>.+?)\r\n",
+   r"\!(?<sndr>.+)\@.+ (?<type>PRIVMSG) #(?<chnl>\w+) :(?<text>.+)"
+]
+
 function parse(raw::String)::Data.Msg
-   rs = [
-      r"(?<type>PING) (?<text>.+)",
-      r"(?<type>NOTICE) \* :(?<text>.+?)\r\n",
-      r"\!(?<sndr>.+)\@.+ (?<type>PRIVMSG) #(?<chnl>\w+) :(?<text>.+)"
-   ]
    m = Utils.some(rs) do r
       match(r, raw)
    end
