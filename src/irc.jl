@@ -39,10 +39,14 @@ function sendline(sock::TCPSocket, buffer::String)
    write(sock, "$(buffer)\r\n")
 end
 
-function msgs(sock)
-   eachline(sock) |>
-   Utils.partial(Iterators.map, Msg.parse) |>
-   Utils.partial(Iterators.filter, !isnothing)
+function msgs(sock)::Channel{Data.Msg}
+   Channel{Data.Msg}(1000) do ch
+      for line in eachline(sock)
+         msg = Msg.parse(line)
+         msg === nothing && continue
+         put!(ch, msg)         
+      end
+   end
 end
 
 function send(sock::TCPSocket, reply::Data.Pong)
@@ -63,7 +67,7 @@ end
 
 function reply(user::String, msg::Data.PrivMsg)::Data.Reply
    if msg.sndr == user return end
-   cmd, args... = lowercase.(split(msg.text, " "))
+   cmd, args... = split(lowercase(msg.text), " ")
    botFn = get(Bot.botFnTbl, cmd, nothing)
    if botFn !== nothing
       text = botFn(msg.chnl, msg.sndr, args...)

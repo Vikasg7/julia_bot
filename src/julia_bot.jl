@@ -17,7 +17,7 @@ function main()
       Irc.auth(sock, cfg.tokn, cfg.user)
       Irc.join(sock, cfg.chnl)
       println("julia_bot is connected!")
-      asyncmap(Irc.msgs(sock)) do msg
+      Threads.foreach(Irc.msgs(sock)) do msg
          Irc.send(sock, Irc.reply(cfg.user, msg))
       end
    catch ex
