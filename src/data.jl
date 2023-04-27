@@ -27,8 +27,8 @@ struct Pong
    text::String
 end
 
-const Msg = Union{Ping, Notice, PrivMsg, Nothing}
+const Msg = Union{Ping, Notice, PrivMsg}
 
-const Reply = Union{Pong, PrivMsg, Nothing}
+const Reply = Union{Pong, PrivMsg}
 
 end

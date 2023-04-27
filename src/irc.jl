@@ -65,7 +65,7 @@ function reply(user::String, msg::Data.Ping)::Data.Reply
    Data.Pong(msg.text)
 end
 
-function reply(user::String, msg::Data.PrivMsg)::Data.Reply
+function reply(user::String, msg::Data.PrivMsg)::Union{Data.Reply, Nothing}
    if msg.sndr == user return end
    cmd, args... = split(lowercase(msg.text), " ")
    botFn = get(Bot.botFnTbl, cmd, nothing)
@@ -75,7 +75,7 @@ function reply(user::String, msg::Data.PrivMsg)::Data.Reply
    end
 end
 
-function reply(user::String, msg::Nothing)::Data.Reply
+function reply(user::String, msg::Nothing)::Nothing
    return nothing
 end
 

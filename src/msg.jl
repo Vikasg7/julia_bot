@@ -9,7 +9,7 @@ rs = [
    r"\!(?<sndr>.+)\@.+ (?<type>PRIVMSG) #(?<chnl>\w+) :(?<text>.+)"
 ]
 
-function parse(raw::String)::Data.Msg
+function parse(raw::String)::Union{Data.Msg, Nothing}
    m = Utils.some(rs) do r
       match(r, raw)
    end
